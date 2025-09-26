@@ -32,6 +32,12 @@ from trax.layers import base
 from trax.layers import combinators as cb
 
 
+# NOTE(dsuo): _multi_device_update_fn is not compatible with
+# jax_pmap_shmap_merge=True because `jax.pmap` requires inputs to be explicitly
+# sharded as the underlying `jax.jit` expects.
+jax.config.update('jax_pmap_shmap_merge', False)
+
+
 class Trainer:
   """Multi-device accelerated trainer.
 
